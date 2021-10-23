@@ -1,14 +1,5 @@
 # Python 2.7
 
-#
-# pfish support functions, where all the real work gets done
-#
-
-# DisplayMessage() ParseCommandLine() WalkPath()
-# HashFile() class _CVSWriter
-# ValidateDirectory() ValidateDirectoryWritable()
-#
-
 import os #Python Standard Library - Miscellaneous operating system interfaces
 import stat #Python Standard Library - functions for interpreting os results
 import time #Python Standard Library - Time access and conversions functions
@@ -19,24 +10,11 @@ import logging #Python Standard Library - logging facility
 
 log = logging.getLogger('main._pfish')
 
-# Name: ParseCommand() Function
-#
-# Desc: Process and Validate the command line arguments
-# use Python Standard Library module argparse
-#
-# Input: none
-#
-# Actions:
-# Uses the standard library argparse to process the command line
-# establishes a global variable gl_args where any of the functions can
-# obtain argument information
-#
 def ParseCommandLine():
     parser = argparse.ArgumentParser('Python file system hashing . . pfish')
 
     parser.add_argument('-v', '-verbose', help='allows progress messages to be displayed', action='store_true')
 
-    # setup a group where the selection is mutually exclusive and required.
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--md5', help='specifies MD5 algorithm', action='store_true')
     group.add_argument('--sha256', help='specifies SHA256 algorithm', action='store_true')
@@ -44,9 +22,6 @@ def ParseCommandLine():
 
     parser.add_argument('-d', '--rootPath', type=ValidateDirectoryWritable, required=True, help="specify the path for reports and logs will be written")
     parser.add_argument('-r', '--reportPath', type=ValidateDirectoryWritable, required=True, help="specify the path for reports and logs will be written")
-
-    # create a global object to hold the validated arguments, these will be available then
-    # to all the Functions within the _phish.py module
 
     global gl_args
     global gl_hashType
@@ -66,22 +41,6 @@ def ParseCommandLine():
     DisplayMessage("Command line processed: Successfully")
 
     return
-
-# End ParseCommandLine===================================
-#
-# Name: WalkPath() Function
-#
-# Desc: Walk the path specified on the command line
-#             use Python Standard Library module os and sys
-#
-# Input: none, uses command line arguments
-#
-# Actions:
-#             Uses the standard library modules os and sys
-#             to traverse the directory structure starting a root
-#             path specified by the user. For each file discovered, WalkPath
-#             will call the Function HashFile() to perform the file hashing
-#
 
 def WalkPath():
 
@@ -104,22 +63,6 @@ def WalkPath():
         oCVS.writerClose()
 
         return processCount
-
-# End WalkPath==========================================
-#
-# Name: HashFile Function
-#
-# Desc: Processes a single file which includes performing a hash of the file
-#             and the extraction of metadata regarding the file processed
-#             use Python Standard Library modules hashlib, os, and sys
-#
-# Input: theFile = the full path of the file
-#             simpleName = just the filename itself
-#
-# Actions:
-#             Attempts to hash the file and extract metadata
-#             Call GenerateReport for successful hashed files
-#
 
 def HashFile(theFile, simpleName, o_result):
     if os.path.exists(theFile):
