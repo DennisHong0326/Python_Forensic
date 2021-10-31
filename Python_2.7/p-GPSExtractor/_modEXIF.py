@@ -40,8 +40,7 @@ def ExtractGPSDictionary(fileName):
 
 def ExtractLatLon(gps):
 
-    if (gps.has_key("GPSLatitude") and gps.has_key("GPSLongitude") and gps.has_key("GPSLatitudeRef") and gps.has_key(
-            "GPSLatitudeRef")):
+    if (gps.has_key("GPSLatitude") and gps.has_key("GPSLongitude") and gps.has_key("GPSLatitudeRef") and gps.has_key("GPSLatitudeRef")):
 
         latitude = gps["GPSLatitude"]
         latitudeRef = gps["GPSLatitudeRef"]
